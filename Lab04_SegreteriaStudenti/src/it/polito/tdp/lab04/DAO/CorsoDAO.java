@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import it.polito.tdp.lab04.exception.CorsoWithoutStudentsException;
+import it.polito.tdp.lab04.exception.GestioneSegreteriaStudentiException;
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Studente;
-import it.sella.tdp.lab04.exception.CorsoWithoutStudentsException;
-import it.sella.tdp.lab04.exception.GestioneSegreteriaStudentiException;
 
 public class CorsoDAO {
 

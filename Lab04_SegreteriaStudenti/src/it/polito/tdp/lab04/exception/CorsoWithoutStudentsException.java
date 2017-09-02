@@ -1,4 +1,4 @@
-package it.sella.tdp.lab04.exception;
+package it.polito.tdp.lab04.exception;
 
 public class CorsoWithoutStudentsException extends GestioneSegreteriaStudentiException{
 

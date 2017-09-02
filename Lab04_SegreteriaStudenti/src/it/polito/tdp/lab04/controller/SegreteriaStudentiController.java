@@ -4,10 +4,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import it.polito.tdp.lab04.exception.GestioneSegreteriaStudentiException;
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Model;
 import it.polito.tdp.lab04.model.Studente;
-import it.sella.tdp.lab04.exception.GestioneSegreteriaStudentiException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

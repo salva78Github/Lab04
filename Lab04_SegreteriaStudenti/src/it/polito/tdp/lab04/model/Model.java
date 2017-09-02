@@ -4,7 +4,7 @@ import java.util.List;
 
 import it.polito.tdp.lab04.DAO.CorsoDAO;
 import it.polito.tdp.lab04.DAO.StudenteDAO;
-import it.sella.tdp.lab04.exception.GestioneSegreteriaStudentiException;
+import it.polito.tdp.lab04.exception.GestioneSegreteriaStudentiException;
 
 public class Model {
 

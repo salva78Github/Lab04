@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polito.tdp.lab04.exception.GestioneSegreteriaStudentiException;
+import it.polito.tdp.lab04.exception.StudentDoesNotAttendAnyCourseException;
+import it.polito.tdp.lab04.exception.StudenteNotFoundException;
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Studente;
-import it.sella.tdp.lab04.exception.GestioneSegreteriaStudentiException;
-import it.sella.tdp.lab04.exception.StudentDoesNotAttendAnyCourseException;
-import it.sella.tdp.lab04.exception.StudenteNotFoundException;
 
 public class StudenteDAO {
 
