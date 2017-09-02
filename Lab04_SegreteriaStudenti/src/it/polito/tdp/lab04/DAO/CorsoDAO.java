@@ -4,11 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Studente;
+import it.sella.tdp.lab04.exception.CorsoWithoutStudentsException;
+import it.sella.tdp.lab04.exception.GestioneSegreteriaStudentiException;
 
 public class CorsoDAO {
 
@@ -60,8 +63,46 @@ public class CorsoDAO {
 	/*
 	 * Ottengo tutti gli studenti iscritti al Corso
 	 */
-	public void getStudentiIscrittiAlCorso(Corso corso) {
+	public List<Studente> getStudentiIscrittiAlCorso(Corso corso) throws GestioneSegreteriaStudentiException {
 		// TODO
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Studente> studenti = new ArrayList<Studente>();
+		
+		try{
+			c = ConnectDB.getConnection();
+			
+			String query = "SELECT s.matricola, s.nome, s.cognome, s.cds " +
+						   "FROM studente s, iscrizione i " +
+						   "WHERE s.matricola = i.matricola " +
+						   "AND i.codins = ? " +
+						   "ORDER BY cognome, nome, matricola ";
+			
+			ps = c.prepareStatement(query);
+			ps.setString(1, corso.getCodice());
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				Studente s = new Studente(rs.getInt("matricola"), rs.getString("nome"), rs.getString("cognome"), rs.getString("cds"));
+				System.out.println(s);
+				studenti.add(s);
+			}
+
+			if(studenti.isEmpty()){
+				throw new CorsoWithoutStudentsException("Per il corso " + corso.getCodice() + " - " + corso.getNome() + " non ci sono studenti iscritti"); 
+			}
+			
+			return studenti;
+			
+		}catch(SQLException sqle) {
+			sqle.printStackTrace();
+			throw new GestioneSegreteriaStudentiException("Errore DB: " + sqle.getMessage());
+		
+		}finally{
+			ConnectDB.closeResources(c, ps, rs);
+		}
+		
 	}
 
 	/*

@@ -13,7 +13,6 @@ public class Corso implements Comparable<Corso>{
 	 * @param periodoDidattico
 	 */
 	public Corso(String codice, String nome, int crediti, int periodoDidattico) {
-		super();
 		this.codice = codice;
 		this.nome = nome;
 		this.crediti = crediti;
@@ -93,6 +92,11 @@ public class Corso implements Comparable<Corso>{
 	public int compareTo(Corso o) {
 		// TODO Auto-generated method stub
 		return getNome().compareTo(o.getNome());
+	}
+
+	public String toString4TextArea() {
+		// TODO Auto-generated method stub
+		return getCodice() + " \t \t " + getCrediti() + " \t \t " + getNome() + " \t \t " + getPeriodoDidattico();
 	}
 
 

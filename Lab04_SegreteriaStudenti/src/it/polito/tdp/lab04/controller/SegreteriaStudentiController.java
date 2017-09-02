@@ -6,8 +6,8 @@ import java.util.List;
 
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Model;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import it.polito.tdp.lab04.model.Studente;
+import it.sella.tdp.lab04.exception.GestioneSegreteriaStudentiException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -64,19 +64,92 @@ public class SegreteriaStudentiController {
 
 	}
 
+	
+	private int getMatricola(){
+		int matricola = -1;
+		String matricolaToString = txtMatricola.getText();
+		System.out.println("<doCercaNome>" + matricolaToString);
+		if(matricolaToString==null || matricolaToString.trim().length()==0){
+			txtResult.setText("Inserire una matricola.");
+		}
+		else{
+			try{
+				matricola = Integer.valueOf(matricolaToString);
+			} catch(NumberFormatException nfe){
+				txtResult.setText("La matricola è una stringa numerica.");
+			}
+		}
+		return matricola;
+		
+	}
+	
 	@FXML
 	void doCercaNome(ActionEvent event) {
+		int matricola = getMatricola();
+		if(matricola ==-1) {
+			return;
+		}
+		
+		try {
+			Studente s =model.retrieveStudente(matricola);
+			txtNome.setText(s.getNome());
+			txtCognome.setText(s.getCognome());
+			txtResult.setText("");
+			
+			
+		} catch (GestioneSegreteriaStudentiException gsse) {
+			// TODO Auto-generated catch block
+			gsse.printStackTrace();
+			txtResult.setText(gsse.getMessage());
+		}
+		
 
 	}
 
 	@FXML
 	void doCercaIscrittiCorso(ActionEvent event) {
+		
+		Corso corso = comboCorso.getValue();
+		System.out.println("<doCercaIscrittiCorso> corso selezionato: " + corso);
+		if(corso == null){
+			txtResult.setText("Selezionare un corso.");
+			return;
+		}
+		
+		try {
+			List<Studente> studenti = model.retrieveStudentiIscrittiAUnCorso(corso);
+			txtResult.setText("");
+			for(Studente s : studenti){
+				txtResult.appendText(s.toString4TextArea() + "\n");
+			}
+			
+		} catch (GestioneSegreteriaStudentiException gsse) {
+			// TODO Auto-generated catch block
+			txtResult.setText(gsse.getMessage());
+		}
+		
 
 	}
 
 	@FXML
 	void doCercaCorsi(ActionEvent event) {
+		int matricola = getMatricola();
+		if(matricola ==-1) {
+			return;
+		}
 
+		try {
+			List<Corso> corsi = model.retireveCorsiACuiEIscrittoUnoStudente(matricola);
+			txtResult.setText("");
+			for(Corso c : corsi){
+				txtResult.appendText(c.toString4TextArea() + "\n");
+			}
+			
+		} catch (GestioneSegreteriaStudentiException gsse) {
+			// TODO Auto-generated catch block
+			txtResult.setText(gsse.getMessage());
+		}
+		
 	}
 
 	@FXML
