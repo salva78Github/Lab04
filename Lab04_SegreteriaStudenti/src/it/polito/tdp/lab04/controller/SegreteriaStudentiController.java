@@ -6,7 +6,8 @@ import java.util.List;
 
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Model;
-import it.polito.tdp.lab04.model.Studente;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -50,7 +51,12 @@ public class SegreteriaStudentiController {
 	private TextField txtCognome;
 
 	public void setModel(Model model) {
-
+		this.model = model;
+		
+		List<Corso> listaCorsi = model.retrieveListaCorsi();
+		Collections.sort(listaCorsi);
+		this.comboCorso.getItems().addAll(listaCorsi);
+		
 	}
 
 	@FXML
@@ -78,6 +84,9 @@ public class SegreteriaStudentiController {
 
 	}
 
+
+	
+	
 	@FXML
 	void initialize() {
 		assert comboCorso != null : "fx:id=\"comboCorso\" was not injected: check your FXML file 'SegreteriaStudenti.fxml'.";
@@ -90,6 +99,9 @@ public class SegreteriaStudentiController {
 		assert btnIscrivi != null : "fx:id=\"btnIscrivi\" was not injected: check your FXML file 'SegreteriaStudenti.fxml'.";
 		assert txtMatricola != null : "fx:id=\"txtMatricola\" was not injected: check your FXML file 'SegreteriaStudenti.fxml'.";
 		assert btnReset != null : "fx:id=\"btnReset\" was not injected: check your FXML file 'SegreteriaStudenti.fxml'.";
+		
+		
+		
 	}
 
 }

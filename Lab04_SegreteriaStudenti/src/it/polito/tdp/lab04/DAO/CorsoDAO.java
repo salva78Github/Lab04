@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,27 +17,36 @@ public class CorsoDAO {
 	 */
 	public List<Corso> getTuttiICorsi() {
 
-		final String sql = "SELECT * FROM corso";
+		final String sql = "SELECT codins, crediti, nome, pd FROM corso";
 
 		List<Corso> corsi = new LinkedList<Corso>();
 
+		Connection conn = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
 		try {
-			Connection conn = ConnectDB.getConnection();
-			PreparedStatement st = conn.prepareStatement(sql);
+			conn = ConnectDB.getConnection();
+			st = conn.prepareStatement(sql);
 
-			ResultSet rs = st.executeQuery();
+			rs = st.executeQuery();
 
 			while (rs.next()) {
 
 				// Crea un nuovo JAVA Bean Corso
 				// Aggiungi il nuovo Corso alla lista
+				Corso c = new Corso(rs.getString("codins"), rs.getString("nome"), rs.getInt("crediti"), rs.getInt("pd"));
+				corsi.add(c);
+				
 			}
 
+			System.out.println("<getTuttiICorsi> Caricati " + corsi.size() + " corsi.");
 			return corsi;
 
 		} catch (SQLException e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 			throw new RuntimeException("Errore Db");
+		} finally {
+			ConnectDB.closeResources(conn , st, rs);
 		}
 	}
 
