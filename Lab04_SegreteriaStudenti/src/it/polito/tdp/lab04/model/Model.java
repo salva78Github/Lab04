@@ -24,8 +24,13 @@ public class Model {
 		return cdao.getStudentiIscrittiAlCorso(corso);
 	}
 	
-	public List<Corso> retireveCorsiACuiEIscrittoUnoStudente(int matricola) throws GestioneSegreteriaStudentiException{
+	public List<Corso> retrieveCorsiACuiEIscrittoUnoStudente(int matricola) throws GestioneSegreteriaStudentiException{
 		return sdao.retrieveCorsiACuiEIscritto(matricola);
 	}
+	
+	public void inscriviStudenteACorso(Studente studente, Corso corso) throws GestioneSegreteriaStudentiException {
+		cdao.inscriviStudenteACorso(studente, corso);
+	}
+
 
 }

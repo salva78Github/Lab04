@@ -61,7 +61,10 @@ public class SegreteriaStudentiController {
 
 	@FXML
 	void doReset(ActionEvent event) {
-
+		txtResult.setText("");
+		txtNome.setText("");
+		txtCognome.setText("");
+		txtMatricola.setText("");
 	}
 
 	
@@ -139,7 +142,7 @@ public class SegreteriaStudentiController {
 		}
 
 		try {
-			List<Corso> corsi = model.retireveCorsiACuiEIscrittoUnoStudente(matricola);
+			List<Corso> corsi = model.retrieveCorsiACuiEIscrittoUnoStudente(matricola);
 			txtResult.setText("");
 			for(Corso c : corsi){
 				txtResult.appendText(c.toString4TextArea() + "\n");
@@ -154,7 +157,29 @@ public class SegreteriaStudentiController {
 
 	@FXML
 	void doIscrivi(ActionEvent event) {
+		Corso corso = comboCorso.getValue();
+		System.out.println("<doCercaIscrittiCorso> corso selezionato: " + corso);
+		if(corso == null){
+			txtResult.setText("Selezionare un corso.");
+			return;
+		}
+		
+		int matricola = getMatricola();
+		if(matricola ==-1) {
+			return;
+		}
 
+		Studente studente;
+		try {
+			studente = model.retrieveStudente(matricola);
+			model.inscriviStudenteACorso(studente, corso);
+			txtResult.setText("Lo studente con matricola " + studente.getMatricola() + " è stato iscritto al corso " + corso.getCodice());
+		} catch (GestioneSegreteriaStudentiException gsse) {
+			// TODO Auto-generated catch block
+			txtResult.setText(gsse.getMessage());
+		}
+		
+		
 	}
 
 

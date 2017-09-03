@@ -10,6 +10,7 @@ import java.util.List;
 
 import it.polito.tdp.lab04.exception.CorsoWithoutStudentsException;
 import it.polito.tdp.lab04.exception.GestioneSegreteriaStudentiException;
+import it.polito.tdp.lab04.exception.StudenteGiaIscrittoAlCorsoException;
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Studente;
 
@@ -109,8 +110,32 @@ public class CorsoDAO {
 	 * Data una matricola ed il codice insegnamento,
 	 * iscrivi lo studente al corso.
 	 */
-	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
-		// TODO
-		return false;
+	public void inscriviStudenteACorso(Studente studente, Corso corso) throws GestioneSegreteriaStudentiException {
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try{
+			c= ConnectDB.getConnection();
+			String query = "INSERT " +
+						   "INTO iscrizione (matricola, codins) " +
+						   "VALUES(?, ?)";
+			ps=c.prepareStatement(query);
+			ps.setInt(1, studente.getMatricola());	
+			ps.setString(2, corso.getCodice());
+			ps.execute();
+		
+		} catch(SQLException sqle){
+			if(sqle.getErrorCode()==1062){
+				throw new StudenteGiaIscrittoAlCorsoException("Lo studente con matricola " + studente.getMatricola() + " è già iscritto al corso '" + corso.getCodice() + " - " + corso.getNome());
+			}
+			
+			sqle.printStackTrace();
+			throw new GestioneSegreteriaStudentiException("Errore DB: " + sqle.getMessage());
+			
+		} finally{
+			ConnectDB.closeResources(c, ps, rs);
+		}
+		
 	}
 }
